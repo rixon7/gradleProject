@@ -1,0 +1,79 @@
+group 'myProject'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+apply plugin: 'net.serenity-bdd.aggregator'
+
+eclipse{
+project {
+name ='myProject'
+}
+}
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+      mavenCentral()
+   	//  maven {url 'http://artifactory:8081/artifactory/repo1'}
+    }    
+    buildscript{    
+    	repositories{
+    	   		mavenCentral()
+    	   		  	}
+    	dependencies {	
+    			classpath "net.serenity-bdd:serenity-gradle-plugin:2.0.82" 
+    		}
+    	 }
+         dependencies {
+                 
+            testCompile 'junit:junit:4.12'
+         	compile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: '1.9.45'
+			compile group: 'net.serenity-bdd', name: 'serenity-gradle-plugin', version: '2.0.82'
+			compile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.89'
+			compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+			compile group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '2.2.1.RELEASE'
+			compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.2.1.RELEASE'
+			compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.1.RELEASE'
+			compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.2.1.RELEASE'
+			compile group: 'org.springframework', name: 'spring-context-support', version: '5.2.1.RELEASE'
+		 	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.1.RELEASE'
+		 	testCompile group: 'org.springframework.integration', name: 'spring-integration-test', version: '5.2.1.RELEASE'
+			testCompile group: 'org.springframework', name: 'spring-test', version: '5.2.1.RELEASE'
+			testCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '2.0.82'
+			testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.82'
+			testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3' 
+	   }	
+	test {	
+			def propName = findProperty('propName') ?: 'default value'
+			def browserName = findProperty('browserName') ?: 'default value'
+			def tagName = findProperty('cucumber.options') ?: 'default value'
+	
+			systemProperty 'test_environment',propName
+		 	systemProperty 'webdriver.driver',browserName
+		 //	systemProperty 'cucumber.options',tagName
+			
+			}
+//Ensure that the Gradle build does not stop at the first test failure,but goes on to generate the serenity report
+	gradle.startParameter.continueOnFailure = true
+
+
+// use this command on terminal to execute the test : 
+//gradle clean -PbrowserName=chrome -PcustomerName=o2 build clean aggregate --info 
+//gradle -PbrowserName=chrome -PpropName=o2.properties build clean aggregate --info
+//gradle -PbrowserName=chrome -PpropName=o2.properties -Pcucumber.options="--tags @O2,@claro" build clean aggregate --info
+//gradle -PbrowserName=chrome -PpropName=claro.properties -Pcucumber.options="--tags @clarolocate" clean test aggregate --info
+
+
+
+
+
+
+
+
+
+
+
+
+
+
